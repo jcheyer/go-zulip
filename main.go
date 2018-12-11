@@ -121,7 +121,9 @@ func (z *Zulip) tryToGetEvents(last_event_id string) []byte {
 	if err != nil {
 		panic(err)
 	}
-
+	if z.Debug {
+		fmt.Printf("Event: %s", res)
+	}
 	return res
 }
 
