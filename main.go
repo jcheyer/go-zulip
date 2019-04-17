@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -137,7 +138,13 @@ func (z *Zulip) GetEvents(handler EventListener) {
 			panic(err)
 		}
 
+		if z.Debug {
+			log.Printf("Event with ID: %s\n", res.QueueID)
+		}
 		if res.Result != "success" {
+			if z.Debug {
+				log.Printf("Result != success: %s\n", res.Result)
+			}
 			continue
 		}
 		events := res.Events
@@ -146,6 +153,9 @@ func (z *Zulip) GetEvents(handler EventListener) {
 				last_event_id = event.ID
 			}
 			if event.Type == "heartbeat" {
+				if z.Debug {
+					log.Println("Heartbeat received")
+				}
 				continue
 			}
 			result := handler.HandleEvent(event)
