@@ -145,7 +145,7 @@ func (z *Zulip) GetEvents(handler EventListener) {
 			if z.Debug {
 				log.Printf("Result != success: %s\n", res.Result)
 			}
-			continue
+			panic(res.Msg)
 		}
 		events := res.Events
 		for _, event := range events {
